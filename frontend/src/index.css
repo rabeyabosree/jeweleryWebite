@@ -1,0 +1,49 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Story+Script&display=swap");
+
+
+@import "tailwindcss";
+
+
+
+/* ✅ Custom Font Utility Class (optional) */
+.story-script-regular {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ========= Slick Customization ========= */
+
+/* 🔹 Dots color and size customize */
+.slick-dots li button:before {
+  color: #a855f7 !important; /* তোমার theme color (purple) */
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #7c3aed !important;
+  opacity: 1;
+}
+
+/* 🔹 Arrows style */
+.slick-prev:before,
+.slick-next:before {
+  color: #7c3aed !important;
+  font-size: 28px;
+  opacity: 0.8;
+}
+
+.slick-prev:hover:before,
+.slick-next:hover:before {
+  opacity: 1;
+}
+
+/* Optional: Center dots a bit higher */
+.slick-dots {
+  bottom: 15px !important;
+}
+
+
+
