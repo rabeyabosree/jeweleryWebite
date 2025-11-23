@@ -34,9 +34,9 @@ mongoose.connect(MONGO_URI)
 //     // Optional: Clear existing data
 //     await Product.deleteMany();
 
-//     // Insert dummy products
-//     await Product.insertMany(products);
-//     console.log("✅ Products inserted successfully");
+//     // // Insert dummy products
+//     // await Product.insertMany(products);
+//     // console.log("✅ Products inserted successfully");
 
 //     process.exit(); // Exit the script
 //   } catch (err) {
