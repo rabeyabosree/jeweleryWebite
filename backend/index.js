@@ -50,15 +50,15 @@ mongoose.connect(MONGO_URI)
 // Run the seeder
 
 // routes
-// const productRoute = require("./routes/productRoute")
-// const authRoute = require("./routes/authRoute")
-// const orderRoute = require("./routes/OrderRoute")
-// const blogRoute = require("./routes/blogRoute")
+const productRoute = require("./routes/productRoute")
+const authRoute = require("./routes/authRoute")
+const orderRoute = require("./routes/OrderRoute")
+const blogRoute = require("./routes/blogRoute")
 
-// app.use("/api/products", productRoute)
-// app.use("/api/auth", authRoute)
-// app.use("/api/orders", orderRoute)
-// app.use("/api/blogs", blogRoute)
+app.use("/api/products", productRoute)
+app.use("/api/auth", authRoute)
+app.use("/api/orders", orderRoute)
+app.use("/api/blogs", blogRoute)
 
 
 

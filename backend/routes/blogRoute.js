@@ -267,14 +267,4 @@ router.post("/:id/like", authMiddleware, async (req, res) => {
 });
 
 
-
-// comment
-router.post("/:id/comment", async (req, res) => {
-
-})
-// share
-router.post("/:id/share", async (req, res) => {
-
-})
-
 module.exports = router
