@@ -91,7 +91,7 @@ router.post("/profile", upload.single("profile"), async (req, res) => {
 
         res.status(200).json({
             message: "Profile updated",
-            // profile: user.profile,
+            profile: user.profile,
         });
     } catch (error) {
         console.error(error);

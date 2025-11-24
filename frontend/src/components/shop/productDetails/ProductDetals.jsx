@@ -89,22 +89,26 @@ function ProductDetails() {
 
 
   return (
-    <div className="max-w-5xl mx-auto p-5 bg-white rounded-lg mt-6">
+    <div className="max-w-5xl mx-auto p-4 sm:p-5 bg-white rounded-lg mt-4 sm:mt-6">
+
       {/* Product Header */}
-      <div className="flex flex-col md:flex-row gap-8 relative">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 relative">
+
+        {/* ⭐ UPDATED: Image full width on mobile */}
         <img
           src={product.image || "https://via.placeholder.com/400"}
           alt={product.title}
-          className="w-full md:w-1/2 object-cover h-[380px] rounded-lg shadow-sm"
+          className="w-full md:w-1/2 object-cover h-[280px] sm:h-[350px] md:h-[380px] rounded-lg shadow-sm"
         />
 
         <div className="flex-1">
-          <p className="text-gray-500 mb-2 capitalize">{product.category}</p>
 
-          <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
+          <p className="text-gray-500 mb-1 capitalize text-sm sm:text-base">{product.category}</p>
+
+          <h1 className="text-xl sm:text-2xl font-bold mb-2">{product.title}</h1>
 
           {/* Ratings */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <FaStar
                 key={i}
@@ -114,59 +118,59 @@ function ProductDetails() {
                   }`}
               />
             ))}
-            <span className="text-gray-500">
-              ({product.reviews?.length || 0} reviews)
-            </span>
+            <span className="text-gray-500 text-sm">({product.reviews?.length || 0} reviews)</span>
           </div>
 
           {/* Price Section */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4 relative">
+
             {product.sale > 0 ? (
               <>
                 <div>
-                  <h3 className="text-md font-semibold mb-1"> Price:</h3>
+                  <h3 className="text-sm sm:text-md font-semibold mb-1">Price:</h3>
+
+                  {/* ⭐ MOBILE SMALLER FONT */}
                   <p className="text-gray-400 line-through text-sm">
-                     ৳ {product.price.toLocaleString()}
+                    ৳ {product.price.toLocaleString()}
                   </p>
-                  <p className="text-2xl font-semibold text-blue-600">
+
+                  <p className="text-xl sm:text-2xl font-semibold text-blue-600">
                     ৳ {salePrice.toLocaleString()}
-                    <span className="ml-2 text-sm text-gray-500">
-                      (After Discount)
-                    </span>
                   </p>
                 </div>
-                <p className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+
+                <p className="absolute top-2 right-2 bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs font-bold">
                   {product.sale}% OFF
                 </p>
               </>
             ) : (
-              <p className="text-2xl font-semibold text-gray-800">
+              <p className="text-xl sm:text-2xl font-semibold text-gray-800">
                 ৳ {product.price.toLocaleString()}
               </p>
             )}
           </div>
 
-
-
           {/* Materials */}
           <div className="mb-4">
             <h2 className="font-semibold mb-1">Materials:</h2>
-            <ul className="list-disc list-inside text-gray-700">
+            <ul className="list-disc list-inside text-gray-700 text-sm sm:text-base">
               {product.materials?.map((m, idx) => (
                 <li key={idx}>{m}</li>
               ))}
             </ul>
           </div>
 
-          {/* ✅ Quantity Selector */}
-          <div className="flex items-center gap-3 mt-2">
+          {/* Quantity Selector */}
+          <div className="flex items-center gap-3 mt-3">
             <button
               onClick={() => handleQtyChange("dec")}
               className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-lg"
             >
               -
             </button>
+
             <span className="text-lg font-semibold">{quantity}</span>
+
             <button
               onClick={() => handleQtyChange("inc")}
               className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-lg"
@@ -174,58 +178,57 @@ function ProductDetails() {
               +
             </button>
           </div>
+
           {/* Stock Info */}
-          <p className="text-gray-600 mt-4 ">
+          <p className="text-gray-600 mt-3 text-sm sm:text-base">
             {product.stock > 0 ? (
-              <span className="text-green-600 font-medium">
-                {product.stock} in stock
-              </span>
+              <span className="text-green-600 font-medium">{product.stock} in stock</span>
             ) : (
               <span className="text-red-500 font-medium">Out of stock</span>
             )}
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          {/* ⭐ MOBILE STACK BUTTONS */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
+
             <button
               onClick={() => {
-                dispatch(
-                  addToCart({
-                    _id: product._id,
-                    title: product.title,
-                    image: product.image,
-                    price: salePrice,
-                    stock: product.stock,
-                    qty: quantity, // ✅ use current quantity
-                  })
-                );
+                dispatch(addToCart({
+                  _id: product._id,
+                  title: product.title,
+                  image: product.image,
+                  price: salePrice,
+                  stock: product.stock,
+                  qty: quantity,
+                }));
                 navigate("/cart");
               }}
-              className="flex-1 bg-[#d4a373] text-white py-3 rounded-md font-semibold hover:bg-[#b58457] transition"
+              className="w-full sm:flex-1 bg-[#d4a373] text-white py-3 rounded-md font-semibold hover:bg-[#b58457] transition"
             >
               Add to Cart
             </button>
 
-
             <button
               onClick={() => navigate("/checkout")}
-              className="flex-1 bg-[#f59e0b] text-white py-3 rounded-md font-semibold hover:bg-[#d97706] transition"
+              className="w-full sm:flex-1 bg-[#f59e0b] text-white py-3 rounded-md font-semibold hover:bg-[#d97706] transition"
             >
               Buy Now
             </button>
+
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="mt-10">
-        <div className="flex border-b mb-4">
+      {/* ⭐ TABS scrollable on mobile */}
+      <div className="mt-8">
+        <div className="flex border-b mb-4 overflow-x-auto no-scrollbar">
           {["description", "additional", "reviews"].map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 capitalize transition-all duration-200 ${activeTab === tab
-                ? "border-b-2 border-blue-500 font-semibold text-blue-600"
-                : "text-gray-600 hover:text-blue-500"
+              className={`px-4 py-2 capitalize whitespace-nowrap transition-all duration-200 ${activeTab === tab
+                  ? "border-b-2 border-blue-500 font-semibold text-blue-600"
+                  : "text-gray-600 hover:text-blue-500"
                 }`}
               onClick={() => setActiveTab(tab)}
             >
@@ -234,43 +237,35 @@ function ProductDetails() {
           ))}
         </div>
 
-        <div className="text-gray-700">
-          {activeTab === "description" && (
-            <p className="leading-relaxed">{product.description}</p>
-          )}
+        {/* Tab Content */}
+        <div className="text-gray-700 text-sm sm:text-base">
+          {activeTab === "description" && <p className="leading-relaxed">{product.description}</p>}
+
           {activeTab === "additional" && (
             <p className="leading-relaxed">{product.additionalDescription}</p>
           )}
+
           {activeTab === "reviews" && (
             <div className="space-y-4">
               {product.reviews?.length > 0 ? (
                 product.reviews.map((r, i) => (
-                  <div
-                    key={i}
-                    className="p-3 rounded-md bg-gray-50 border text-gray-700"
-                  >
+                  <div key={i} className="p-3 rounded-md bg-gray-50 border">
                     <div className="flex items-center gap-1">
                       {Array.from({ length: 5 }).map((_, idx) => (
                         <FaStar
                           key={idx}
-                          className={`${idx < r.rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                            }`}
+                          className={`${idx < r.rating ? "text-yellow-400" : "text-gray-300"}`}
                         />
                       ))}
                     </div>
                     <p className="mt-1">{r.comment}</p>
-                    <small className="text-gray-400">
-                      - {r.userName || "Anonymous"}
-                    </small>
+                    <small className="text-gray-400">- {r.userName || "Anonymous"}</small>
                   </div>
                 ))
               ) : (
                 <p className="text-gray-500">No reviews yet.</p>
               )}
 
-              {/* Add Review Button */}
               <button
                 onClick={() => setShowReviewModal(true)}
                 className="mt-4 bg-[#d4a373] text-white px-4 py-2 rounded-md hover:bg-[#b58457] transition"
@@ -295,7 +290,10 @@ function ProductDetails() {
         rating={rating}
       />
     </div>
+
   );
 }
 
 export default ProductDetails;
+
+

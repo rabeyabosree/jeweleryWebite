@@ -2,8 +2,8 @@ const express = require('express')
 const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv").config()
-// const products = require("utility/product")
-// const Product = require("models/blogModel")
+const products = require("./utility/data")
+const Blog = require("./models/blogModel")
 const app = express()
 
 const PORT = process.env.PORT
@@ -32,11 +32,11 @@ mongoose.connect(MONGO_URI)
 //     console.log("MongoDB connected");
 
 //     // Optional: Clear existing data
-//     await Product.deleteMany();
+//     await Blog.deleteMany();
 
-//     // // Insert dummy products
-//     // await Product.insertMany(products);
-//     // console.log("✅ Products inserted successfully");
+//     // Insert dummy products
+//     await Blog.insertMany(products);
+//     console.log("✅ Products inserted successfully");
 
 //     process.exit(); // Exit the script
 //   } catch (err) {
@@ -48,6 +48,8 @@ mongoose.connect(MONGO_URI)
 // seedProducts()
 
 // Run the seeder
+
+
 
 // routes
 const productRoute = require("./routes/productRoute")

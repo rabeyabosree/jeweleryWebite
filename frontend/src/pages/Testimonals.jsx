@@ -30,41 +30,42 @@ const testimonials = [
 
 function Testimonials() {
   const settings = {
-    dots: false,
+    dots: true, // mobile-friendly dots
     infinite: true,
     speed: 700,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 4000,
-    arrows: true,
+    arrows: false, // mobile-friendly arrows hidden
     pauseOnHover: true,
+    adaptiveHeight: true,
   };
 
   return (
     <div className="w-full bg-[#fff8f2] py-16 mt-16">
-      <div className="max-w-3xl mx-auto text-center px-6 relative">
+      <div className="max-w-3xl mx-auto text-center px-6 sm:px-0 relative">
         <Slider {...settings}>
           {testimonials.map((item) => (
             <div key={item.id} className="px-4">
               <div className="flex flex-col items-center">
                 {/* Quote Icon */}
-                <FaQuoteLeft className="text-4xl text-[#d4a373] mb-6" />
+                <FaQuoteLeft className="text-4xl sm:text-5xl text-[#d4a373] mb-6" />
 
                 {/* Comment */}
-                <p className="text-gray-700 text-base md:text-lg italic leading-relaxed mb-6">
+                <p className="text-gray-700 text-sm sm:text-base md:text-lg italic leading-relaxed mb-6">
                   “{item.comment}”
                 </p>
 
                 {/* Rating */}
                 <div className="flex justify-center mb-2">
                   {[...Array(item.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-500 text-lg" />
+                    <FaStar key={i} className="text-yellow-500 text-lg sm:text-xl" />
                   ))}
                 </div>
 
                 {/* Name */}
-                <h4 className="text-gray-800 font-semibold text-lg">
+                <h4 className="text-gray-800 font-semibold text-base sm:text-lg">
                   — {item.name}
                 </h4>
               </div>

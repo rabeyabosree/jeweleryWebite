@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { allBlogs } from "../../redux/reducers/blogReducer";
 
 function BlogPage() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { blogs = [], loading } = useSelector((state) => state.blogs);
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 6;
+
+  // Calculate paginate data
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
 
   useEffect(() => {
     dispatch(allBlogs());
@@ -23,7 +34,7 @@ function BlogPage() {
           Discover insights, tips, and updates from our latest blogs
         </p>
 
-        {/* ✅ Breadcrumb section fixed */}
+        {/* Breadcrumb */}
         <div className="flex items-center justify-center mt-4 text-sm">
           <a href="/" className="hover:underline">Home</a>
           <MdKeyboardArrowRight className="text-lg" />
@@ -31,11 +42,11 @@ function BlogPage() {
         </div>
       </div>
 
-      {/* Main layout */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8 py-10 px-6">
-        {/* Left Sidebar — search & filters */}
-        <aside className="p-5 h-fit">
-          {/* Search input with icon */}
+      {/* Main Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[260px_1fr] gap-8 py-10 px-4 sm:px-6">
+        
+        {/* Sidebar */}
+        <aside className="p-5 h-fit bg-white rounded-md shadow-sm">
           <div className="relative">
             <input
               type="text"
@@ -48,20 +59,23 @@ function BlogPage() {
           <h3 className="text-lg font-semibold mt-6 mb-3">Categories</h3>
           <ul className="space-y-2 text-gray-700">
             <li className="cursor-pointer hover:text-[#d4a373] transition">All</li>
-            <li className="cursor-pointer hover:text-[#d4a373] transition">Design</li>
-            <li className="cursor-pointer hover:text-[#d4a373] transition">Development</li>
-            <li className="cursor-pointer hover:text-[#d4a373] transition">Marketing</li>
+            <li className="cursor-pointer hover:text-[#d4a373] transition">Gemstone</li>
+            <li className="cursor-pointer hover:text-[#d4a373] transition">Handmade</li>
+            <li className="cursor-pointer hover:text-[#d4a373] transition">Earrings</li>
           </ul>
         </aside>
 
-        {/* Right Side — Blogs list */}
+        {/* Blog List */}
         <section>
           <h2 className="text-2xl font-semibold mb-6">Latest Blogs</h2>
+
+          {loading && <p className="text-center py-10">Loading...</p>}
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogs?.map((blog, i) => (
+            {currentBlogs.map((blog) => (
               <div
-                key={i}
-                className=" overflow-hidden hover:shadow-lg transition"
+                key={blog._id}
+                className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition cursor-pointer"
                 onClick={() => navigate(`/blogs/${blog._id}`)}
               >
                 <img
@@ -72,8 +86,7 @@ function BlogPage() {
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{blog.title}</h3>
                   <p className="text-gray-600 text-sm line-clamp-3">
-                    {blog.metaTitle
-                    }
+                    {blog.metaTitle}
                   </p>
                   <button className="mt-3 text-[#d4a373] hover:text-[#b58457] transition">
                     Read More →
@@ -85,18 +98,36 @@ function BlogPage() {
 
           {/* Pagination */}
           <div className="flex justify-center mt-10 space-x-2">
-            <button className="px-3 py-1 border rounded hover:bg-[#d4a373] hover:text-white transition">
+            {/* Prev */}
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className="px-3 py-1 border rounded disabled:opacity-40 hover:bg-[#d4a373] hover:text-white transition"
+            >
               &lt;
             </button>
-            {[1, 2, 3].map((num) => (
+
+            {/* Page Numbers */}
+            {[...Array(totalPages)].map((_, i) => (
               <button
-                key={num}
-                className="px-3 py-1 border rounded hover:bg-[#d4a373] hover:text-white transition"
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-3 py-1 border rounded transition ${
+                  currentPage === i + 1
+                    ? "bg-[#d4a373] text-white"
+                    : "hover:bg-[#d4a373] hover:text-white"
+                }`}
               >
-                {num}
+                {i + 1}
               </button>
             ))}
-            <button className="px-3 py-1 border rounded hover:bg-[#d4a373] hover:text-white transition">
+
+            {/* Next */}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              className="px-3 py-1 border rounded disabled:opacity-40 hover:bg-[#d4a373] hover:text-white transition"
+            >
               &gt;
             </button>
           </div>
