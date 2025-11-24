@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const nodemailer = require("nodemailer");
+const upload = require('../utility/multer')
 
 // JWT secret
 const JWT_SECRET = process.env.SECRET_KEY || "your_jwt_secret";
@@ -77,7 +78,7 @@ router.post("/login", async (req, res) => {
 });
 
 // -------------------- UPLOAD PROFILE AVATAR --------------------
-router.post("/profile",  async (req, res) => {
+router.post("/profile", upload.single("profile"), async (req, res) => {
     try {
         const { userId } = req.body; // you can send userId in body or get from token
         if (!req.file) return res.status(400).json({ message: "No file uploaded" });
@@ -85,7 +86,7 @@ router.post("/profile",  async (req, res) => {
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        // user.profile = req.file.path;  multer returns path upload.single("profile"),
+       user.profile = req.file.path;
         await user.save();
 
         res.status(200).json({
