@@ -2,7 +2,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9000/api/auth";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+//"http://localhost:9000/api/auth";
 
 // -------------------- Initial State --------------------
 const initialState = {
@@ -22,7 +24,7 @@ export const authRegister = createAsyncThunk(
     "auth/register",
     async (authData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/register`, authData);
+            const { data } = await axios.post(`${BASE_URL}/api/auth/register`, authData);
             return data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Registration failed");
@@ -35,7 +37,7 @@ export const authLogin = createAsyncThunk(
     "auth/login",
     async (credentials, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/login`, credentials);
+            const { data } = await axios.post(`${BASE_URL}/api/auth/login`, credentials);
             return data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Login failed");
@@ -48,7 +50,7 @@ export const upProfile = createAsyncThunk(
     "auth/profile-upload",
     async (profileData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/profile`, profileData);
+            const { data } = await axios.post(`${BASE_URL}/api/auth/profile`, profileData);
             return data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Profile upload failed");
@@ -61,7 +63,7 @@ export const forgotPassword = createAsyncThunk(
     "auth/forgot-password",
     async (emailData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/forgot-password`, emailData);
+            const { data } = await axios.post(`${BASE_URL}/api/auth/forgot-password`, emailData);
             return data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Forgot password failed");
@@ -74,7 +76,7 @@ export const verifyOtp = createAsyncThunk(
     "auth/verify-otp",
     async (otpData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/verify-otp`, otpData);
+            const { data } = await axios.post(`${BASE_URL}/api/auth/verify-otp`, otpData);
             return data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "OTP verification failed");
@@ -87,7 +89,7 @@ export const resetPassword = createAsyncThunk(
     "auth/reset-password",
     async (resetData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/reset-password`, resetData);
+            const { data } = await axios.post(`${BASE_URL}/api/auth/reset-password`, resetData);
             return data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Reset password failed");

@@ -2,7 +2,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9000/api/orders"
+// const BASE_URL = "http://localhost:9000/api/orders"
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
 
 // Create order
 export const createOrder = createAsyncThunk(
@@ -10,7 +11,7 @@ export const createOrder = createAsyncThunk(
     async (orderData, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.post(`${BASE_URL}`, orderData,
+            const { data } = await axios.post(`${BASE_URL}/api/orders`, orderData,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -30,7 +31,7 @@ export const getOrder = createAsyncThunk(
     async (orderId, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${BASE_URL}/${orderId}`,
+            const { data } = await axios.get(`${BASE_URL}/api/orders/${orderId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -51,7 +52,7 @@ export const payOrder = createAsyncThunk(
     async ({ orderId, paymentResult }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.put(`${BASE_URL}/payment/success/${orderId}`, {
+            const { data } = await axios.put(`${BASE_URL}/api/orders/payment/success/${orderId}`, {
                 paymentResult
             }, {
                 headers: {
@@ -72,7 +73,7 @@ export const getUserOrders = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${BASE_URL}/myorders`, {
+            const { data } = await axios.get(`${BASE_URL}/api/orders/myorders`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -91,7 +92,7 @@ export const getAllOrders = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${BASE_URL}/admin`, {
+            const { data } = await axios.get(`${BASE_URL}/api/orders/admin`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -111,7 +112,7 @@ export const updateOrderStatus = createAsyncThunk(
       const token = localStorage.getItem("token");
 
       const { data } = await axios.put(
-        `${BASE_URL}/${orderId}/status`,
+        `${BASE_URL}/api/orders/${orderId}/status`,
         { status },
         {
           headers: {

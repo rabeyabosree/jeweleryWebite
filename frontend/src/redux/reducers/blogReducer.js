@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9000/api/blogs";
+// const BASE_URL = "http://localhost:9000/api/blogs";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
 
 // Create Blog
 export const createBlog = createAsyncThunk(
@@ -9,7 +10,7 @@ export const createBlog = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.post(BASE_URL, payload, {
+      const { data } = await axios.post(`${BASE_URL}/api/blogs`, payload, {
         headers: { Authorization: `Bearer ${token}` },
         "Content-Type": "multipart/form-data",
       });
@@ -27,7 +28,7 @@ export const getAllBlogs = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token")
-      const { data } = await axios.get(BASE_URL, {
+      const { data } = await axios.get(`${BASE_URL}/api/blogs`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -45,7 +46,7 @@ export const getSingleBlog = createAsyncThunk(
   "blogs/getSingleBlog",
   async (id, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/${id}`);
+      const { data } = await axios.get(`${BASE_URL}/api/blogs/${id}`);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -59,7 +60,7 @@ export const updateBlog = createAsyncThunk(
   async ({ id, blogData }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.put(`${BASE_URL}/${id}`, blogData, {
+      const { data } = await axios.put(`${BASE_URL}/api/blogs/${id}`, blogData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;
@@ -75,7 +76,7 @@ export const deleteBlog = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.delete(`${BASE_URL}/${id}`, {
+      const { data } = await axios.delete(`${BASE_URL}/api/blogs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;
@@ -91,7 +92,7 @@ export const likeBlog = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.post(`${BASE_URL}/${id}/like`, {}, {
+      const { data } = await axios.post(`${BASE_URL}/api/blogs/${id}/like`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;
@@ -108,7 +109,7 @@ export const allBlogs = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
 
-      const { data } = await axios.get(`${BASE_URL}/public`);
+      const { data } = await axios.get(`${BASE_URL}/api/blogs/public`);
 
       return data;
     } catch (err) {
