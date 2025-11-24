@@ -1,6 +1,5 @@
 const express = require("express")
 const Product = require('./../models/productModel')
-const upload = require("../utility/multer")
 const User = require("../models/authModel")
 const isAdmin = require("../middleware/isAdmin")
 const authMiddlware = require("../middleware/authmiddware")
@@ -10,7 +9,7 @@ const router = express.Router()
 
 
 // products uplod for admin
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/",  async (req, res) => {
   try {
     const { category, title, description, price, stock, materials, sale, additionalDescription } = req.body;
 
@@ -19,9 +18,10 @@ router.post("/", upload.single("image"), async (req, res) => {
       return handleError(res, "All required fields must be provided", 400);
     }
 
-    if (!req.file) {
-      return handleError(res, "Product image is required", 400);
-    }
+    // if (!req.file) {
+    //   return handleError(res, "Product image is required", 400);
+    // }
+    // upload.single("image"),
 
     // Materials parsing
     let materialsArray = [];
@@ -40,7 +40,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       description: description.trim(),
       price: parseFloat(price),
       stock: parseInt(stock),
-      image: req.file.path,
+      // image: req.file.path,
       materials: materialsArray,
       sale: sale ? parseInt(sale) : 0,
       additionalDescription: additionalDescription ? additionalDescription.trim() : "",
@@ -91,7 +91,7 @@ router.get("/:id", async (req, res) => {
 })
 
 // edit single product for admin
-router.put("/edit/:id", upload.single("image"), async (req, res) => {
+router.put("/edit/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ success: false, message: "Product not found" });
@@ -124,7 +124,7 @@ router.put("/edit/:id", upload.single("image"), async (req, res) => {
     if (additionalDescription) product.additionalDescription = additionalDescription;
 
     // Update image if new file uploaded
-    if (req.file) product.image = req.file.path;
+    // if (req.file) product.image = req.file.path;  upload.single("image"),
 
     const updatedProduct = await product.save();
     res.status(200).json({ success: true, message: "Product updated", product: updatedProduct });

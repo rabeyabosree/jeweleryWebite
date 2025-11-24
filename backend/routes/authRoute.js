@@ -2,7 +2,6 @@ const express = require("express");
 const User = require("../models/authModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const upload = require("../utility/multer"); // multer config
 const router = express.Router();
 const nodemailer = require("nodemailer");
 
@@ -78,7 +77,7 @@ router.post("/login", async (req, res) => {
 });
 
 // -------------------- UPLOAD PROFILE AVATAR --------------------
-router.post("/profile", upload.single("profile"), async (req, res) => {
+router.post("/profile",  async (req, res) => {
     try {
         const { userId } = req.body; // you can send userId in body or get from token
         if (!req.file) return res.status(400).json({ message: "No file uploaded" });
@@ -86,12 +85,12 @@ router.post("/profile", upload.single("profile"), async (req, res) => {
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        user.profile = req.file.path; // multer returns path
+        // user.profile = req.file.path;  multer returns path upload.single("profile"),
         await user.save();
 
         res.status(200).json({
             message: "Profile updated",
-            profile: user.profile,
+            // profile: user.profile,
         });
     } catch (error) {
         console.error(error);

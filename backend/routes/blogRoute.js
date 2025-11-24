@@ -4,12 +4,12 @@ const authMiddleware = require("../middleware/authmiddware")
 const isAdmin = require("../middleware/isAdmin")
 const Blog = require("../models/blogModel")
 const slugify = require("slugify")
-const upload = require("../utility/multer")
+
 
 
 // ----- Admin -----
 // post blog
-router.post("/", upload.single("featuredImage"), isAdmin, authMiddleware, async (req, res) => {
+router.post("/",  isAdmin, authMiddleware, async (req, res) => {
     try {
         const {
             title,
@@ -32,7 +32,7 @@ router.post("/", upload.single("featuredImage"), isAdmin, authMiddleware, async 
         // Auto-generate slug if not provided
         const blogSlug = slug ? slugify(slug, { lower: true, strict: true }) : slugify(title, { lower: true, strict: true });
 
-        const featuredImage = req.file.path || '';
+        // const featuredImage = req.file.path || ''; upload.single("featuredImage"),
         // ✅ Convert tags & keywords to arrays
         const formattedTags = tags ? tags.split(",").map(tag => tag.trim()) : [];
         const formattedKeywords = keywords ? keywords.split(",").map(kw => kw.trim()) : [];
@@ -43,7 +43,7 @@ router.post("/", upload.single("featuredImage"), isAdmin, authMiddleware, async 
             slug: blogSlug,
             excerpt,
             content,
-            featuredImage,
+            // featuredImage,
             tags: formattedTags,
             category,
             productCategory,
@@ -85,7 +85,7 @@ router.get("/", authMiddleware, isAdmin, async (req, res) => {
 });
 
 // update route
-router.put("/:id", isAdmin, authMiddleware, upload.single("featuredImage"), async (req, res) => {
+router.put("/:id", isAdmin, authMiddleware, async (req, res) => {
     try {
         const blogId = req.params.id;
         const existingBlog = await Blog.findById(blogId);
@@ -131,9 +131,9 @@ router.put("/:id", isAdmin, authMiddleware, upload.single("featuredImage"), asyn
         }
 
         // Update featured image if uploaded
-        if (req.file && req.file.path) {
-            existingBlog.featuredImage = req.file.path;
-        }
+        // if (req.file && req.file.path) {
+        //     existingBlog.featuredImage = req.file.path;  upload.single("featuredImage"),
+        // }
 
         existingBlog.updatedAt = Date.now();
 
